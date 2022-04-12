@@ -30,9 +30,10 @@ export const createUsuarios = async (req, res) => {
         // .input("responsable", sql.Int, responsable)
         .query(querys.addUsuario);
   
-      res.json({
+      res.json({usuarios:{
         nombre_usuario,
         clave
+      }
       })
     } catch (error) {
       res.status(500);
