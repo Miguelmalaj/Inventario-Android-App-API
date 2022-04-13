@@ -8,5 +8,25 @@ export const querys = {
           @nombre_usuario,
           @clave,
           @tipo_usuario
-          );`
+          );`,
+    
+    addInventario: `INSERT INTO [Inventario].[dbo].[Inventario] (
+      VIN,
+      Id_fecha,
+      Nombre_ubicacion,
+      Empresa,
+      Sucursal,
+      Id_usuario
+
+      ) VALUES (
+        @VIN,
+        @Id_fecha,
+        @Nombre_ubicacion,
+        @Empresa,
+        @Sucursal,
+        @Id_usuario
+
+        );`,
+
+    getInventario: `SELECT * FROM [Inventario].[dbo].[Inventario]`    
 }
