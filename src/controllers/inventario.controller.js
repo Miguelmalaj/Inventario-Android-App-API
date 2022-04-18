@@ -11,24 +11,40 @@ export const getInventario = async (req, res) => {
     }
 }
 
-export const getInventarioAgencia = async(req, res) => {
+export const crearInventarioAgencia = async(req, res) => {
     //destructuring
-    const { Empresa, Sucursal, Id_usuario } = req.body;
+    // const { Empresa, Sucursal, Id_usuario } = req.body;
+    // console.log(req.body);
+
+    /* for(const registro of req.body){
+        console.log(registro.Nombre_ubicacion);
+
+    } */
+    // res.json({mensaje:"done"});
 
     try {
         const pool = await getConnection();
-        const result = await pool.request()
-        .input("Empresa", sql.Int, Empresa)
-        .input("Sucursal", sql.Int, Sucursal)
-        .input("Id_usuario", sql.Int, Id_usuario)
-        
-        .query(querys.getInventarioAgencia);
-        
-        res.json({inventario:result.recordset});
+        // const result = await pool.request()
+        for(const registro of req.body){
+            await pool.request()
+            .input("VIN", sql.VarChar, registro.VIN)
+            .input("Id_fecha",sql.Date, registro.Id_fecha)
+            .input("Nombre_ubicacion", sql.VarChar, registro.Nombre_ubicacion)
+            .input("Empresa", sql.Int, registro.Empresa)
+            .input("Sucursal", sql.Int, registro.Sucursal)
+            .input("Id_usuario", sql.Int, registro.Id_usuario)
+            
+            .query(querys.addInventario);
+
+        }
+
+        res.json({mensaje:"La sincronización se ha hecho correctamente"});
+        console.log({mensaje:"registro exitoso"});
 
     } catch (error) {
         res.status(500);
         res.send(error.message);
+        console.log(error.message);
 
     }
 }
