@@ -21,6 +21,13 @@ export const crearInventarioAgencia = async(req, res) => {
 
     } */
     // res.json({mensaje:"done"});
+    let mensaje = "La sincronización se ha hecho correctamente";
+    let estado = 1;
+    if(req.body.length === 0){
+        mensaje = "No existen registros por sincronizar."
+        estado = 2;
+    }
+    
 
     try {
         const pool = await getConnection();
@@ -38,7 +45,10 @@ export const crearInventarioAgencia = async(req, res) => {
 
         }
 
-        res.json({mensaje:"La sincronización se ha hecho correctamente"});
+        res.json({
+            mensaje:mensaje,
+            estado:estado
+        });
         console.log({mensaje:"registro exitoso"});
 
     } catch (error) {
