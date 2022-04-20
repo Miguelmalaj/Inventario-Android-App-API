@@ -10,7 +10,7 @@ export const querys = {
           @tipo_usuario
           );`, */
     
-    addInventario: `INSERT INTO [Inventario].[dbo].[Inventario] (
+    addInventario: `INSERT INTO [Indicadores].[dbo].[Inventario] (
       VIN,
       Id_fecha,
       Nombre_ubicacion,
@@ -28,7 +28,26 @@ export const querys = {
 
         );`,
 
-    getInventario: `SELECT * FROM [Inventario].[dbo].[Inventario]`,
+    getInventario: `SELECT * FROM [Indicadores].[dbo].[Inventario]`,
     
-    getInventarioAgencia: `SELECT * FROM [Inventario].[dbo].[Inventario] WHERE Empresa=@Empresa AND Sucursal=@Sucursal AND Id_usuario=@Id_usuario`
+    getInventarioAgencia: `SELECT * FROM [Indicadores].[dbo].[Inventario] WHERE Empresa=@Empresa AND Sucursal=@Sucursal AND Id_usuario=@Id_usuario`,
+
+    existenRegistros: `SELECT * FROM [Indicadores].[dbo].[Inventario] WHERE Empresa=@Empresa AND Sucursal=@Sucursal AND Id_fecha=@Id_fecha`,
+
+    updateInventario: `UPDATE [Indicadores].[dbo].[Inventario] 
+    SET 
+    Empresa = @Empresa, 
+    Sucursal = @Sucursal, 
+    Id_fecha = @Id_fecha, 
+    Nombre_ubicacion = @Nombre_ubicacion
+   
+     WHERE 
+     VIN = @VIN`,
+
+     eliminarRegistrosHoy:`DELETE FROM [Indicadores].[dbo].[Inventario] WHERE Empresa=@Empresa AND Sucursal=@Sucursal AND Id_fecha=@Id_fecha`
+
+
+     //--DELETE FROM [Indicadores].[dbo].[Inventario] WHERE Empresa=@Empresa AND Sucursal=@Sucursal AND Id_fecha=@Id_fecha;
+
+
 }

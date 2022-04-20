@@ -11,6 +11,49 @@ export const getInventario = async (req, res) => {
     }
 }
 
+
+export const existeInventario = async(req, res) => {
+    // console.log(req.body);
+    let mensaje = "existen";
+    let estado = 1;
+
+
+    try {
+       const pool = await getConnection();
+       let result = await pool.request()
+       .input("Id_fecha",sql.Date, req.body.Id_fecha)
+       .input("Empresa",sql.Int, req.body.Empresa)
+       .input("Sucursal",sql.Int, req.body.Sucursal)
+       .query(querys.existenRegistros);
+
+    //    console.log(result.rowsAffected);
+        if(result.rowsAffected > 0){
+            // console.log("SI HAY REG");
+            res.json({
+                mensaje:mensaje,
+                estado:estado
+            });
+
+        }else{
+            // console.log("NO HAY REG");
+            mensaje = "noexisten";
+            estado=2;
+            res.json({
+                mensaje:mensaje,
+                estado:estado
+            });
+
+        }
+       
+
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+        console.log(error.message);
+    }
+    
+}
+
 export const crearInventarioAgencia = async(req, res) => {
     //destructuring
     // const { Empresa, Sucursal, Id_usuario } = req.body;
@@ -50,6 +93,45 @@ export const crearInventarioAgencia = async(req, res) => {
             estado:estado
         });
         console.log({mensaje:"registro exitoso"});
+
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+        console.log(error.message);
+
+    }
+}
+
+export const eliminarInventarioAgencia = async(req, res) => {
+    
+    let mensaje = "Procesando sincronización...";
+    let estado = 1;
+    const id = req.params.id;
+
+    //empresa
+    let Empresa = id.substring(0,1);
+    let Sucursal = id.substring(2,3);
+    let Fecha = id.substring(4,14);
+    
+    /* console.log("parametros:"+id);
+    console.log("Empresa: "+Empresa);
+    console.log("Sucursal: "+Sucursal);
+    console.log("Fecha: "+Fecha); */
+
+    try {
+         const pool = await getConnection();
+        let result = await pool.request()
+        .input("Id_fecha",sql.Date, Fecha)
+        .input("Empresa", sql.Int, Empresa)
+        .input("Sucursal", sql.Int, Sucursal)
+        .query(querys.eliminarRegistrosHoy);
+
+        // console.log("rows affected: "+ result.rowsAffected);
+
+        res.json({
+            mensaje:mensaje,
+            estado:estado
+        });
 
     } catch (error) {
         res.status(500);
