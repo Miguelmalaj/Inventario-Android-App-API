@@ -16,7 +16,9 @@ export const querys = {
       Nombre_ubicacion,
       Empresa,
       Sucursal,
-      Id_usuario
+      Id_usuario,
+      Auditor,
+      QRCapturado
 
       ) VALUES (
         @VIN,
@@ -24,7 +26,9 @@ export const querys = {
         @Nombre_ubicacion,
         @Empresa,
         @Sucursal,
-        @Id_usuario
+        @Id_usuario,
+        @Auditor,
+        @QRCapturado
 
         );`,
 
@@ -32,7 +36,9 @@ export const querys = {
     
     getInventarioAgencia: `SELECT * FROM [Indicadores].[dbo].[Inventario] WHERE Empresa=@Empresa AND Sucursal=@Sucursal AND Id_usuario=@Id_usuario`,
 
-    existenRegistros: `SELECT * FROM [Indicadores].[dbo].[Inventario] WHERE Empresa=@Empresa AND Sucursal=@Sucursal AND Id_fecha=@Id_fecha`,
+    existenRegistros: `SELECT * FROM [Indicadores].[dbo].[Inventario] 
+    WHERE 
+    Empresa=@Empresa AND Sucursal=@Sucursal AND Id_fecha=@Id_fecha AND Auditor=@Auditor`,
 
     updateInventario: `UPDATE [Indicadores].[dbo].[Inventario] 
     SET 
@@ -44,7 +50,9 @@ export const querys = {
      WHERE 
      VIN = @VIN`,
 
-     eliminarRegistrosHoy:`DELETE FROM [Indicadores].[dbo].[Inventario] WHERE Empresa=@Empresa AND Sucursal=@Sucursal AND Id_fecha=@Id_fecha`
+     eliminarRegistrosHoy:`DELETE FROM [Indicadores].[dbo].[Inventario] 
+     WHERE 
+     Empresa=@Empresa AND Sucursal=@Sucursal AND Id_fecha=@Id_fecha AND Id_usuario=@Id_usuario AND Auditor=@Auditor`
 
 
      //--DELETE FROM [Indicadores].[dbo].[Inventario] WHERE Empresa=@Empresa AND Sucursal=@Sucursal AND Id_fecha=@Id_fecha;

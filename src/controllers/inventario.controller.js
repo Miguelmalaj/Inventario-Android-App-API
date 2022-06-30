@@ -1,17 +1,50 @@
 import { getConnection, querys, sql } from "../database";
 
 export const getInventario = async (req, res) => {
-    try {
+    /* try {
         const pool = await getConnection();
         const result = await pool.request().query(querys.getInventario);
         res.json({inventario:result.recordset});
     } catch (error) {
         res.status(500);
         res.send(error.message);
-    }
+    } */
+}
+export const createInventario = async(req,res) => {
+
+    /* const { VIN, Id_fecha, Nombre_ubicacion, Empresa, Sucursal, Id_usuario } = req.body;
+
+    try {
+        const pool = await getConnection();
+
+        await pool
+        .request()
+        .input("VIN", sql.VarChar, VIN)
+        .input("Id_fecha", sql.Date, Id_fecha)
+        .input("Nombre_ubicacion", sql.VarChar, Nombre_ubicacion)
+        .input("Empresa", sql.Int, Empresa)
+        .input("Sucursal", sql.Int, Sucursal)
+        .input("Id_usuario", sql.Int, Id_usuario)
+        
+        .query(querys.addInventario);
+
+
+        //RESPUESTA DE RETORNO
+        res.json({
+            inventario:{
+                VIN
+          }
+          })
+        
+    } catch (error) {
+      res.status(500);
+      res.send(error.message);
+    } */
+
 }
 
 
+//LAS 3 FUNCIONES QUE ESTÁN ABAJO DE ESTA LÍNEA SE ESTÁN UTILIZANDO ACTUALMENTE EN LA APP ANDROID INVENTARIOS.
 export const existeInventario = async(req, res) => {
     // console.log(req.body);
     let mensaje = "existen";
@@ -24,18 +57,19 @@ export const existeInventario = async(req, res) => {
        .input("Id_fecha",sql.Date, req.body.Id_fecha)
        .input("Empresa",sql.Int, req.body.Empresa)
        .input("Sucursal",sql.Int, req.body.Sucursal)
+       .input("Auditor",sql.VarChar, req.body.Auditor)
        .query(querys.existenRegistros);
 
     //    console.log(result.rowsAffected);
         if(result.rowsAffected > 0){
-            // console.log("SI HAY REG");
+            // estado 1 = si hay registros
             res.json({
                 mensaje:mensaje,
                 estado:estado
             });
 
         }else{
-            // console.log("NO HAY REG");
+            // estado 2  = no hay registros
             mensaje = "noexisten";
             estado=2;
             res.json({
@@ -83,6 +117,8 @@ export const crearInventarioAgencia = async(req, res) => {
             .input("Empresa", sql.Int, registro.Empresa)
             .input("Sucursal", sql.Int, registro.Sucursal)
             .input("Id_usuario", sql.Int, registro.Id_usuario)
+            .input("Auditor", sql.VarChar, registro.Auditor)
+            .input("QRCapturado", sql.VarChar, registro.QRCapturado)
             
             .query(querys.addInventario);
 
@@ -112,6 +148,8 @@ export const eliminarInventarioAgencia = async(req, res) => {
     let Empresa = id.substring(0,1);
     let Sucursal = id.substring(2,3);
     let Fecha = id.substring(4,14);
+    let Id_usuario = id.substring(15,16);
+    let Auditor = id.substring(17,18);
     
     /* console.log("parametros:"+id);
     console.log("Empresa: "+Empresa);
@@ -120,10 +158,12 @@ export const eliminarInventarioAgencia = async(req, res) => {
 
     try {
          const pool = await getConnection();
-        let result = await pool.request()
+        await pool.request()
         .input("Id_fecha",sql.Date, Fecha)
         .input("Empresa", sql.Int, Empresa)
         .input("Sucursal", sql.Int, Sucursal)
+        .input("Id_usuario", sql.Int, Id_usuario)
+        .input("Auditor", sql.VarChar, Auditor)
         .query(querys.eliminarRegistrosHoy);
 
         // console.log("rows affected: "+ result.rowsAffected);
@@ -141,47 +181,7 @@ export const eliminarInventarioAgencia = async(req, res) => {
     }
 }
 
-export const createInventario = async(req,res) => {
-    //destructuring variables en body
-    /* 
-    VIN - varchar
-    Id_fecha - date
-    Nombre_ubicacion - varchar
-    Empresa - int
-    Sucursal - int
-    Id_usuario - int
-    */
 
-    const { VIN, Id_fecha, Nombre_ubicacion, Empresa, Sucursal, Id_usuario } = req.body;
-
-    try {
-        const pool = await getConnection();
-
-        await pool
-        .request()
-        .input("VIN", sql.VarChar, VIN)
-        .input("Id_fecha", sql.Date, Id_fecha)
-        .input("Nombre_ubicacion", sql.VarChar, Nombre_ubicacion)
-        .input("Empresa", sql.Int, Empresa)
-        .input("Sucursal", sql.Int, Sucursal)
-        .input("Id_usuario", sql.Int, Id_usuario)
-        
-        .query(querys.addInventario);
-
-
-        //RESPUESTA DE RETORNO
-        res.json({
-            inventario:{
-                VIN
-          }
-          })
-        
-    } catch (error) {
-      res.status(500);
-      res.send(error.message);
-    }
-
-}
 
 //TODO
 //2.- QUERYS
